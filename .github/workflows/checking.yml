@@ -1,5 +1,7 @@
 name: React Test
 
+on: [push]
+
 jobs: 
   runs-on: ubuntu-latest
   - name: testing workflow

@@ -1,0 +1,6 @@
+
+jobs: 
+  name: My testing purpose
+  steps: 
+    run-name: hello user
+    run: echo "hello user"
