@@ -1,0 +1,10 @@
+name: sdsdf
+
+jobs: 
+  - name: Notify Issues
+      if: always()  # Ensure this step always runs
+      uses: "marvinpinto/action-automatic-releases@latest"  # Example action
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: 'opened'
+          message: 'New issue triggered by CI workflow'
