@@ -1,0 +1,6 @@
+name: React Test
+
+jobs: 
+  runs-on: ubuntu-latest
+  - name: testing workflow
+    run: echo "hello world"

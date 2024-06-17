@@ -4,26 +4,36 @@ import { FaLocationDot } from "react-icons/fa6";
 
 function Navbar() {
   return (
-    <header className="max-w-screen-2xl mx-auto container">
-      <div className="navbar xl:px-24">
-        <div className="navbar-start">
-          <div className="mr-6">
+    <header className="max-w-screen-2xl mx-auto container sticky top-0 bg-white border-b-[1px] border-b-stone-300">
+      <div className="sm:navbar xl:px-24 p-2 sm:p-0">
+        <div className="navbar-start flex flex-1 w-full justify-between">
+          <div className="mr-6 sm:flex hidden">
             <img src={"./public/logo.png"} alt="logo.png" className="h-full" />
           </div>
 
-          <div className="group flex items-center cursor-pointer">
-            <p>choose location</p>
-            <FaLocationDot className="ml-2 group-hover:text-green" />
+          <div className="group flex flex-col flex-col-reverse flex-1 sm:flex-row items-start  sm:items-center cursor-pointer">
+            <p className="font-light from-neutral-500 text-sm">
+              choose location
+            </p>
+            <div className="flex items-center gap-2">
+              <FaLocationDot className="sm:ml-2 text-green sm:text-slate-900 group-hover:text-green" />
+              <h2 className="font-bold text-base sm:hidden">Other</h2>
+            </div>
           </div>
+
+          <button className="btn btn-ghost btn-circle mr-4 sm:hidden ">
+            <FaUser />
+          </button>
         </div>
 
-        <div className="navbar-end">
-          <button className="btn btn-ghost btn-circle mr-4 lg:flex hidden">
+        <div className="navbar-end sm:flex hidden">
+          <button className="btn btn-ghost btn-circle mr-4 ">
             <FaUser />
           </button>
 
-          {/* search */}
-          <button className="btn btn-ghost btn-circle mr-4 lg:flex hidden">
+          <button className="btn btn-ghost btn-circle mr-4">
+            {/* search */}
+
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5"
@@ -44,7 +54,7 @@ function Navbar() {
           <div
             tabIndex={0}
             role="button"
-            className="btn btn-ghost btn-circle mr-4 lg:flex hidden"
+            className="btn btn-ghost btn-circle mr-4"
           >
             <div className="indicator">
               <svg
@@ -65,7 +75,7 @@ function Navbar() {
             </div>
           </div>
 
-          <a className="btn bg-green rounded-full px-6 text-white hidden lg:flex items-center gap-2">
+          <a className="btn bg-green rounded-full px-6 text-white hidden sm:flex items-center gap-2">
             <BiPhoneCall />
             Contact
           </a>
