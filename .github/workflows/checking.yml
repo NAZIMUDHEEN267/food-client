@@ -1,8 +1,6 @@
-name: React Test
+name: checking secret
 
-on: [push]
+on: workflow_dispatch
 
 jobs: 
-  runs-on: ubuntu-latest
-  - name: testing workflow
-    run: echo "hello world"
+  - name: checking ${{ secrets.NAME }}
