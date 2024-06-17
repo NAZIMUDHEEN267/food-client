@@ -20,4 +20,4 @@ jobs:
       - name: install code
         run: npm i
       - name: build code
-        run: npm build && cd ./public
+        run: npm run build && cd ./public
