@@ -4,5 +4,4 @@ on: workflow_dispatch
 
 jobs:
   runs-on: ubuntu-latest
-  - uses: actions/node-setup@v3
-  run: node -v
+  run: echo "hell"
