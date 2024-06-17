@@ -12,6 +12,7 @@ jobs:
       - name: install code
         run: npm i
   second-job:
+    needs: first-job
     name: running second job
     runs-on: ubuntu-latest
     steps:
