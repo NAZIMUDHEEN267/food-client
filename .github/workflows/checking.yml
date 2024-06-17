@@ -9,16 +9,12 @@ jobs:
       - name: get our code
         uses: actions/checkout@v4
         uses: actions/setup-node@v4
-          with: 
-            node-version: 18
   install-dep:
     runs-on: macos-latest
     steps:
       - name: 'running on macos'
         uses: actions/checkout@v4
         uses: actions/setup-node@v4
-          with: 
-            node-version: 18
       - name: 'install dependencies'
         run: npm ci
 
