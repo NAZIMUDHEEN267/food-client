@@ -3,8 +3,9 @@ name: checking ${{ secrets.NAME }}
 on: workflow_dispatch
 
 jobs:
-  runs-on: ubuntu-latest
-  steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-node@v3
-    run: node -v
+  testing-job:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+      run: node -v
