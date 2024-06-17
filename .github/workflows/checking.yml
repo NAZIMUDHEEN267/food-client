@@ -1,10 +1,12 @@
 name: checking ${{ secrets.NAME }}
+on: push
+jobs: 
+  android:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get the code
+      uses: actions/checkout@v3
+      uses: actions/setup-node@v4
+      run: node -v && ls
 
-on: workflow_dispatch
 
-jobs:
-  runs-on: ubuntu-latest
-  steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-node@v3
-    run: node -v
