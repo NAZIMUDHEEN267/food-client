@@ -1,12 +1,29 @@
-name: checking ${{ secrets.NAME }}
-on: push
-jobs: 
-  android:
+name: CI Workflow ${{ secrets.NAME }}
+
+on:
+  push:
+    branches:
+      - main  # Trigger on pushes to the main branch
+  pull_request:
+    branches:
+      - main  # Trigger on pull requests targeting the main branch
+
+jobs:
+  build:
     runs-on: ubuntu-latest
+    
     steps:
-      - name: Get the code
-        uses: actions/checkout@v3
-        uses: actions/setup-node@v4
-        run: node -v && ls
+      - name: Checkout code
+        uses: actions/checkout@v2  # Fetches the repository's code
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v2  # Sets up Node.js environment (example)
 
+      - name: Install dependencies
+        run: npm install  # Example: Installs Node.js dependencies
+
+      - name: Build
+        run: npm run build  # Example: Runs build script
+
+      - name: Test
+        run: npm test  # Example: Runs tests
