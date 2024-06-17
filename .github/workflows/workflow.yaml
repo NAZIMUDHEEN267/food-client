@@ -1,0 +1,14 @@
+name: Work flow 
+
+on: [push]
+
+jobs:
+  first-job:
+    name: running first job
+    runs-on: ubuntu-latest
+    steps:
+      - name: get code 
+        uses: actions/checkout@v4
+      - name: install code
+        run: npm i
+        
