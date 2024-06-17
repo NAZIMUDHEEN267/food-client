@@ -11,4 +11,13 @@ jobs:
         uses: actions/checkout@v4
       - name: install code
         run: npm i
-        
+  second-job:
+    name: running second job
+    runs-on: ubuntu-latest
+    steps:
+      - name: get code 
+        uses: actions/checkout@v4
+      - name: install code
+        run: npm i
+      - name: build code
+        run: npm build && cd ./public
