@@ -14,5 +14,5 @@ jobs:
       uses: JamesIves/github-pages-deploy-action@v4.6.1
       with:
         branch: main
-        folder: ./dist
+        folder: ./dist 
           
