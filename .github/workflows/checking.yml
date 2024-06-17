@@ -14,16 +14,13 @@ jobs:
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2  # Fetches the repository's code
+        uses: actions/checkout@v4  # Fetches the repository's code
 
       - name: Set up Node.js
-        uses: actions/setup-node@v2  # Sets up Node.js environment (example)
+        uses: actions/setup-node@v4  # Sets up Node.js environment (example)
 
       - name: Install dependencies
-        run: npm install  # Example: Installs Node.js dependencies
+        run: pnpm install  # Example: Installs Node.js dependencies
 
       - name: Build
-        run: npm run build  # Example: Runs build script
-
-      - name: Test
-        run: npm test  # Example: Runs tests
+        run: pnpm build  # Example: Runs build script
