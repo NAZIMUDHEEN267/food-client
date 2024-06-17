@@ -7,19 +7,19 @@ jobs:
     runs-on: ubuntu-latest
     testing:
       - name: testing our jobs
-          uses: action/checkout@v4
+          uses: actions/checkout@v4
       - name: echo
           run: echo "tested"
   linting:
     needs: testing
     runs-on: ubuntu-latest 
       - name: linting our project
-        uses: action/checkout@v4
+        uses: actions/checkout@v4
       - name: echo 'linted'
   build:
     needs: [testing, linting]
     runs-on: ubuntu-latest 
       - name: building our project
-        uses: action/checkout@v4
+        uses: actions/checkout@v4
       - name: building 
         run: npm i && npm run build
