@@ -1,11 +1,11 @@
-import { forgotType, responseType, signInType, tokenType } from '@/types/auth/query';
+import { forgotType, responseType, signInType, tokenType, versionResponse, versionType } from '@/types/auth/query';
 import { User } from '@/types/auth/user';
-import { baseQuery } from '@/utils/fetchBaseQuery';
-import { createApi } from '@reduxjs/toolkit/query/react'
+import { baseQuery, rawBasequery } from '@/utils/fetchBaseQuery';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 export const authQuery = createApi({
     reducerPath: 'authApi',
-    baseQuery,
+    baseQuery: fetchBaseQuery({ baseUrl: 'http://192.168.193.107:8081/api/auth' }),
     endpoints: (build) => ({
         signInUser: build.mutation<User, signInType>({
             query: (data) => ({
@@ -34,6 +34,13 @@ export const authQuery = createApi({
                 url: '/verify-token',
                 body: data
             })
+        }),
+        versionCheck: build.mutation<versionResponse, versionType>({
+            query: (data) => ({
+                url: '/version',
+                method: 'post',
+                body: data
+            })
         })
     }),
 })
@@ -43,5 +50,6 @@ export const {
     useSignInUserMutation,
     useForgotPasswdMutation,
     useSignUpUserMutation,
-    useVerifyTokenMutation
+    useVerifyTokenMutation,
+    useVersionCheckMutation
 } = authQuery;

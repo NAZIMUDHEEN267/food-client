@@ -6,8 +6,8 @@ import { ApiError } from "@/types/api";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 
 
-const rawBasequery = fetchBaseQuery({
-    baseUrl: 'http://192.168.193.107:5000/api',
+export const rawBasequery = fetchBaseQuery({
+    baseUrl: 'http://192.168.193.107:5000/api/auth',
     prepareHeaders: (headers, { getState }) => {
         const token = (getState() as RootState).auth.token;
 
@@ -36,6 +36,6 @@ export const baseQuery: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryE
             router.replace('/(auth)')
         }
     }
-
+    
     return result;
 }

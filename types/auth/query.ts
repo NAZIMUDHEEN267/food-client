@@ -15,3 +15,13 @@ export type responseType = {
 export type tokenType = {
     token: string
 }
+
+export type versionResponse = {
+    _id: string,
+    platform: string,
+    version: string
+}
+
+export type versionType = {
+    platform: string
+}

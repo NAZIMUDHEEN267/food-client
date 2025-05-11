@@ -23,15 +23,14 @@ export default function RootLayout() {
     winkyRough: require("@/assets/fonts/WinkyRough-Bold.ttf")
   });
 
-  useEffect(() => {
-    router.replace('/(version)/minor')
-  }, [])
+  // useEffect(() => {
+  //   router.replace('/(version)/minor')
+  // }, [])
 
   useEffect(() => {
     if (loaded) {
       SplashScreen.hideAsync()
     }
-
   }, [loaded]);
 
   if (!loaded) {
@@ -40,8 +39,11 @@ export default function RootLayout() {
 
   return (
     <Provider store={store}>
-      <StatusBar style='light' translucent />
-      <Stack screenOptions={{ animation: 'none', headerShown: false }} />
+      <StatusBar style='dark' translucent />
+      <Stack screenOptions={{ animation: 'none', headerShown: false }}>
+        <Stack.Screen name='(version)/minor' options={{ animation: 'slide_from_bottom' }} />
+      </Stack>
+
       <Toast
         position='bottom'
         swipeable={false}
