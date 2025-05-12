@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import CommonInput from '@/components/CommonInput'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
@@ -12,6 +12,8 @@ import CommonDateInput from '@/components/CommonDateInput'
 import moment from 'moment'
 import { Ionicons } from '@expo/vector-icons'
 import { User } from '@/types/auth/user'
+import { useSignUpUserMutation } from '@/redux/rtk/authQuery'
+import Toast from 'react-native-toast-message'
 
 
 const schema = yup.object({
@@ -29,9 +31,20 @@ const schema = yup.object({
 
 const login = () => {
 
-    const [image, setImage] = useState<null | string>(null)
+    const [image, setImage] = useState<null | { uri: string, name: string, type: string }>(null)
+    const [triggerSignUp, { data, isSuccess }] = useSignUpUserMutation();
 
     const router = useRouter()
+
+
+    useEffect(() => {
+        if (isSuccess) {
+            Toast.show({
+                type: 'success',
+                text2: 'User successfully created'
+            })
+        }
+    }, [isSuccess])
 
     const { control, handleSubmit, clearErrors, formState: { errors } } = useForm<User>({
         resolver: yupResolver(schema),
@@ -50,13 +63,27 @@ const login = () => {
         })
 
         if (!result.canceled) {
-            setImage(result.assets[0].uri);
+            const { uri, mimeType, fileName } = result.assets[0];
+
+            setImage({ uri, type: mimeType, name: fileName });
         }
     }
 
 
     const onSubmit = (data: User) => {
-        console.log({ ...data, profile_image: image, age: moment(data.age).format('YYYY/MM/DD') });
+
+        const formData = new FormData();
+        Object.entries(data).forEach(([key, value]) => {
+            if(key == 'age') {
+                formData.append(key, moment().diff(moment(data.age)) + '')
+            } else if (key === 'profile_image') {
+                formData.append(key, image)
+            } else {
+                formData.append(key, value)
+            }
+        })
+
+        triggerSignUp(formData)
     }
 
     return (
@@ -106,7 +133,7 @@ const login = () => {
                 <CommonDateInput
                     control={control}
                     name='age'
-                    maxDate={new Date()}
+                    maxDate={moment({ year: moment().subtract(10, 'years').year(), month: 11, day: 31 }).toDate()}
                 />
 
                 <CommonInput<User>
@@ -114,7 +141,7 @@ const login = () => {
                     placeholder='Image (optional)'
                     name='profile_image'
                     readonly
-                    onClick={launchImage}
+                    onClick={image ? null : launchImage}
                 />
 
                 {image && <View style={{ backgroundColor: '#fac0a5', width: 150, marginTop: 8, marginBottom: 15, height: 120, padding: 6, borderRadius: 6 }}>
@@ -127,7 +154,7 @@ const login = () => {
                     }} onPress={() => setImage(null)} />
 
                     <Image
-                        source={image}
+                        source={image?.uri}
                         style={{ width: '100%', height: '100%' }}
                         contentFit="contain"
                         transition={1000}

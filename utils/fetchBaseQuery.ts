@@ -8,16 +8,19 @@ import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 
 export const rawBasequery = fetchBaseQuery({
     baseUrl: 'http://192.168.193.107:5000/api/auth',
-    prepareHeaders: (headers, { getState }) => {
+    prepareHeaders: (headers, { getState, extra }) => {
         const token = (getState() as RootState).auth.token;
 
         if (token) {
             headers.set('Authorization', `Bearer ${token}`);
         }
+        
+        // if (!(extra?.formData instanceof FormData)) {
+        //     headers.set('Content-Type', 'application/json');
+        //   }
 
-        headers.set('Content-Type', 'application/json');
         return headers;
-    }
+    },
 });
 
 export const baseQuery: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (args, api, extraOptions) => {
@@ -36,6 +39,7 @@ export const baseQuery: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryE
             router.replace('/(auth)')
         }
     }
-    
+
     return result;
 }
+

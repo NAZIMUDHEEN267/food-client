@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { Control, Controller, FieldValues, useController } from 'react-hook-form'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Ionicons } from '@expo/vector-icons';
+import moment from 'moment';
 
 
 interface Props<T extends FieldValues> {
@@ -24,7 +25,7 @@ function CommonDateInput<T extends FieldValues>({ control, name, readonly, maxDa
     const { field: { onChange, value }, fieldState: { error } } = useController({
         name,
         control,
-        defaultValue: new Date()
+        defaultValue: moment({ year: moment().subtract(10, 'years').year(), month: 11, day: 31 }).toDate()
     })
 
     const onChangeValue = (e) => {
@@ -32,13 +33,13 @@ function CommonDateInput<T extends FieldValues>({ control, name, readonly, maxDa
         onClick()
     }
 
-    const val = !isNaN(value?.nativeEvent?.timestamp) ? new Date(value?.nativeEvent?.timestamp) : new Date()
+    const val = !isNaN(value?.nativeEvent?.timestamp) ? moment(value?.nativeEvent?.timestamp) : moment({ year: moment().subtract(10, 'years').year(), month: 11, day: 31 })
 
 
     return (
         <>
             <TouchableOpacity onPress={onClick} style={{ width: '100%', marginBottom: 10 }}>
-                <TextInput style={styles.input} value={val?.toLocaleDateString()} readOnly />
+                <TextInput style={styles.input} value={val.format('DD/MM/YYYY')} readOnly />
 
                 <Ionicons
                     name='calendar'
@@ -50,12 +51,11 @@ function CommonDateInput<T extends FieldValues>({ control, name, readonly, maxDa
 
             {show && (
                 <DateTimePicker
-                    value={val}
+                    value={val.toDate()}
                     mode="date"
                     display="default"
                     onChange={onChangeValue}
                     disabled={readonly}
-
                     maximumDate={maxDate}
                     minimumDate={minDate}
                 />

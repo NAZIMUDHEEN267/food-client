@@ -1,7 +1,9 @@
+import { User } from "./user"
 
 export type signInType = {
     email: string,
-    password: string
+    password: string,
+    role: string
 }
 
 export type forgotType = {
@@ -24,4 +26,9 @@ export type versionResponse = {
 
 export type versionType = {
     platform: string
+}
+
+export type SignInResponse = {
+    user: User,
+    token: string
 }

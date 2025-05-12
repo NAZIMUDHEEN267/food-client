@@ -1,25 +1,24 @@
-import { forgotType, responseType, signInType, tokenType, versionResponse, versionType } from '@/types/auth/query';
-import { User } from '@/types/auth/user';
-import { baseQuery, rawBasequery } from '@/utils/fetchBaseQuery';
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { forgotType, responseType, SignInResponse, signInType, tokenType, versionResponse, versionType } from '@/types/auth/query';
+import { baseQuery } from '@/utils/fetchBaseQuery';
+import { createApi } from '@reduxjs/toolkit/query/react'
 
 export const authQuery = createApi({
     reducerPath: 'authApi',
-    baseQuery: fetchBaseQuery({ baseUrl: 'http://192.168.193.107:8081/api/auth' }),
+    baseQuery,
     endpoints: (build) => ({
-        signInUser: build.mutation<User, signInType>({
+        signInUser: build.mutation<SignInResponse, signInType>({
             query: (data) => ({
                 url: '/sign-in',
                 method: 'post',
-                body: { ...data, role: 'user' }
+                body: data
             })
         }),
-        signUpUser: build.mutation<responseType, User>({
+        signUpUser: build.mutation<responseType, FormData>({
             query: (data) => ({
                 url: '/sign-up',
                 method: 'post',
-                body: data
-            })
+                body: data,
+            }),
         }),
         forgotPasswd: build.mutation<responseType, forgotType>({
             query: (data) => ({

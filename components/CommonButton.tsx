@@ -1,5 +1,6 @@
 import { View, Text, TouchableOpacity, StyleSheet, GestureResponderEvent } from 'react-native'
 import React from 'react'
+import LottieView from 'lottie-react-native'
 
 interface Props {
     text: string,
@@ -9,10 +10,16 @@ interface Props {
 
 const CommonButton = ({ text, onClick, isLoading }: Props) => {
     return (
-        <TouchableOpacity disabled={isLoading} onPress={onClick} style={styles.button}>
+        <TouchableOpacity disabled={isLoading} onPress={onClick} style={[styles.button, { backgroundColor: isLoading ? '#e3a27f' : 'orange' }]}>
             {
                 isLoading ? (
-                    null
+                    <LottieView
+                        source={require('@/assets/lottie/loader.json')}
+                        style={{ height: 30, width: 30 }}
+                        autoPlay
+                        loop
+                    />
+
                 ) : <Text style={styles.text}>{text}</Text>
             }
         </TouchableOpacity>
@@ -25,7 +32,6 @@ const styles = StyleSheet.create({
         padding: 10,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'orange',
         borderRadius: 10
     },
     text: {

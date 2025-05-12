@@ -8,9 +8,9 @@ interface Props<T extends FieldValues> {
     control: Control<T>,
     name: string,
     type?: string,
-    placeholder: string
-    readonly?: boolean
-    onClick?: (e: any) => void
+    placeholder: string,
+    readonly?: boolean,
+    onClick?: null | ((e: any) => void)
 }
 
 function CommonInput<T extends FieldValues>({ control, name, readonly, type, placeholder, onClick }: Props<T>) {
@@ -51,6 +51,7 @@ const styles = StyleSheet.create({
     input: {
         borderWidth: 1,
         backgroundColor: '#f2f3f5',
+        color: '#555',
         borderColor: '#c2c8d1',
         borderRadius: 10,
         paddingVertical: 15,

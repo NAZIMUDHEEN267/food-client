@@ -8,7 +8,8 @@ import Animated, {
   withTiming,
   Easing
 } from 'react-native-reanimated'
-// import LottieView from 'lottie-react-native'
+import LottieView from 'lottie-react-native'
+import * as Webbrowser from 'expo-web-browser'
 
 
 const MajorModal = () => {
@@ -51,11 +52,12 @@ const MajorModal = () => {
 
         <Animated.View style={imageStyle}>
 
-          {/* <LottieView
+          <LottieView
             autoPlay
+            loop
             source={require('@/assets/lottie/burger.json')}
             style={styles.image}
-          /> */}
+          />
         </Animated.View>
 
         <Text style={styles.headline}>🚀 Major Release ({version})</Text>
@@ -67,7 +69,7 @@ const MajorModal = () => {
         </Text>
         <CommonButton
           onClick={() => {
-            Linking.openURL('https://play.google.com/store/apps/details?id=com.whatsapp&hl=en_IN&pli=1')
+            Webbrowser.openBrowserAsync('https://play.google.com/store/apps/details?id=com.whatsapp&hl=en_IN&pli=1')
           }}
           text='Update'
         />

@@ -2,12 +2,12 @@ import { useFonts } from 'expo-font';
 import { Stack, useRouter } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
 import 'react-native-reanimated';
 import { Provider } from 'react-redux'
 import { useColorScheme } from '@/hooks/useColorScheme';
 import store from '@/redux/store';
 import Toast from 'react-native-toast-message';
+
 
 
 
@@ -23,15 +23,6 @@ export default function RootLayout() {
     winkyRough: require("@/assets/fonts/WinkyRough-Bold.ttf")
   });
 
-  // useEffect(() => {
-  //   router.replace('/(version)/minor')
-  // }, [])
-
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync()
-    }
-  }, [loaded]);
 
   if (!loaded) {
     return null;
@@ -39,9 +30,9 @@ export default function RootLayout() {
 
   return (
     <Provider store={store}>
-      <StatusBar style='dark' translucent />
+      <StatusBar style='light' backgroundColor='black' translucent={false} />
       <Stack screenOptions={{ animation: 'none', headerShown: false }}>
-        <Stack.Screen name='(version)/minor' options={{ animation: 'slide_from_bottom' }} />
+        <Stack.Screen name='(version)/minor' options={{ animation: 'fade' }} />
       </Stack>
 
       <Toast

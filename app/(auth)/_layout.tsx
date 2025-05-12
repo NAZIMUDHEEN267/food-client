@@ -1,4 +1,4 @@
-import { StyleSheet, ImageBackground, ScrollView, KeyboardAvoidingView, Platform } from 'react-native'
+import { StyleSheet, ImageBackground, ScrollView } from 'react-native'
 import { Slot } from 'expo-router'
 import React from 'react'
 

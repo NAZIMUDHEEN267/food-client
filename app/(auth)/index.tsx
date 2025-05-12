@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TextInput, Button, ImageBackground, ScrollView, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import CommonInput from '@/components/CommonInput'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
@@ -9,48 +9,50 @@ import { Link, useRouter } from 'expo-router'
 import { Image } from 'expo-image'
 import { onFacebookButtonPress, onGoogleButtonPress } from '@/utils/socialSigns'
 import { useSignInUserMutation } from '@/redux/rtk/authQuery'
-import axios from 'axios'
+import { signInType } from '@/types/auth/query';
+import Toast from 'react-native-toast-message'
+import { useDispatch } from 'react-redux'
+import { addUser } from '@/redux/slices/authSlice'
+import useUser from '@/hooks/useUser'
 
 
-
-interface LoginProps {
-  email: string,
-  password: string
-}
 
 const schema = yup.object({
   email: yup.string().email('Type must be email').required('Email is requied'),
-  password: yup.string().required('Password is required')
+  password: yup.string().required('Password is required'),
+  user: yup.string().nullable()
 })
-
-const custAxios = axios.create({
-  baseURL: process.env.EXPO_BASE_URL,
-  timeout: 5000,
-  headers: {
-    'Content-Type': 'application/json'
-  }
-})
-
 
 const login = () => {
 
-  const [signIn, { isLoading }] = useSignInUserMutation()
+  const [signIn, { isLoading, data }] = useSignInUserMutation()
+  const dispatch = useDispatch();
+  const { setItem } = useUser()
 
-  const { control, handleSubmit, clearErrors } = useForm({
+  const { control, handleSubmit } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      email: 'kasdflasdkf@gmail.com',
-      password: 'kasdflkasjdfk'
+      role: 'user'
     }
   });
 
+  useEffect(() => {
+    if (data) {
+      Toast.show({
+        type: 'success',
+        text2: 'Login successfull.'
+      })
+
+      setItem(data)
+        .then(() => {
+          dispatch(addUser(data))
+          router.replace('/(protected)/home')
+        })
+    }
+  }, [data])
+
 
   const router = useRouter();
-
-  const onSubmit = (data) => {
-    signIn(data)
-  }
-
 
   return (
     <React.Fragment>
@@ -58,14 +60,14 @@ const login = () => {
         <Text style={styles.heading_text}>WELCOME!</Text>
       </View>
       <View style={styles.content}>
-        <CommonInput<LoginProps>
+        <CommonInput<signInType>
           control={control}
           placeholder='Email'
           type='email-address'
           name='email'
         />
 
-        <CommonInput<LoginProps>
+        <CommonInput<signInType>
           control={control}
           placeholder='Password'
           type='password'
@@ -76,7 +78,7 @@ const login = () => {
           <Text style={{ fontFamily: 'winkyRough' }}>Forgot password?</Text>
         </Link>
 
-        <CommonButton text={'Login'} onClick={handleSubmit(onSubmit)} />
+        <CommonButton text={'Login'} onClick={handleSubmit(signIn)} />
 
         <View style={styles.navigation}>
           <Text style={{ marginRight: 7, fontFamily: 'openSans' }}>Don't have any account yet?</Text>

@@ -1,6 +1,7 @@
 package com.nazimudheen.food_delivery
 import expo.modules.splashscreen.SplashScreenManager
 
+
 import android.os.Build
 import android.os.Bundle
 

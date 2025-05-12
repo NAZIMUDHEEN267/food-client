@@ -37,7 +37,7 @@
           "image": "./assets/images/icons/adaptive-icon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#ed7c26"
+          "backgroundColor": "#FFA920"
         }
       ],
       [
@@ -56,7 +56,8 @@
       ],
       "@react-native-firebase/app",
       "@react-native-firebase/auth",
-      "expo-secure-store"
+      "expo-font",
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true

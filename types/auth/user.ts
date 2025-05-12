@@ -4,7 +4,6 @@ export interface User {
     password: string,
     age: Date | number,
     username: string,
-    mobile: number,
     pincode: number,
     address: string,
     phonenumber: number,

@@ -13,10 +13,12 @@ import { forgotType } from '@/types/auth/query'
 
 interface EmailProps {
     email: string,
+    user: string
 }
 
 const schema = yup.object({
     email: yup.string().email('Type must be email').required('Email is requied'),
+    role: yup.string().nullable().default('user')
 })
 
 
