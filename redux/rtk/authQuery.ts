@@ -8,14 +8,14 @@ export const authQuery = createApi({
     endpoints: (build) => ({
         signInUser: build.mutation<SignInResponse, signInType>({
             query: (data) => ({
-                url: '/sign-in',
+                url: '/auth/sign-in',
                 method: 'post',
                 body: data
             })
         }),
         signUpUser: build.mutation<responseType, FormData>({
             query: (data) => ({
-                url: '/sign-up',
+                url: '/auth/sign-up',
                 method: 'post',
                 body: data,
             }),
@@ -23,20 +23,20 @@ export const authQuery = createApi({
         forgotPasswd: build.mutation<responseType, forgotType>({
             query: (data) => ({
                 method: 'post',
-                url: '/forgot-password',
+                url: '/auth/forgot-password',
                 body: data,
             })
         }),
         verifyToken: build.mutation<responseType, tokenType>({
             query: data => ({
                 method: 'post',
-                url: '/verify-token',
+                url: '/auth/verify-token',
                 body: data
             })
         }),
         versionCheck: build.mutation<versionResponse, versionType>({
             query: (data) => ({
-                url: '/version',
+                url: '/auth/version',
                 method: 'post',
                 body: data
             })

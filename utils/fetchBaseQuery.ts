@@ -1,13 +1,13 @@
 import { BaseQueryFn, FetchArgs, fetchBaseQuery } from "@reduxjs/toolkit/query";
 import Toast from 'react-native-toast-message'
 import { router } from "expo-router";
-import RootState from "@/types/rootState";
+import { RootState } from "@/types/redux";
 import { ApiError } from "@/types/api";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 
 
 export const rawBasequery = fetchBaseQuery({
-    baseUrl: 'http://192.168.193.107:5000/api/auth',
+    baseUrl: 'http://192.168.193.107:5000/api',
     prepareHeaders: (headers, { getState, extra }) => {
         const token = (getState() as RootState).auth.token;
 
