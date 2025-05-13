@@ -1,16 +1,17 @@
-import { View, Text, TouchableOpacity, StyleSheet, GestureResponderEvent } from 'react-native'
+import { View, Text, TouchableOpacity, StyleSheet, GestureResponderEvent, StyleProp, ViewStyle } from 'react-native'
 import React from 'react'
 import LottieView from 'lottie-react-native'
 
 interface Props {
     text: string,
     onClick: (e: GestureResponderEvent) => void,
-    isLoading?: boolean
+    isLoading?: boolean,
+    style?: StyleProp<ViewStyle>
 }
 
-const CommonButton = ({ text, onClick, isLoading }: Props) => {
+const CommonButton = ({ text, onClick, isLoading, style }: Props) => {
     return (
-        <TouchableOpacity disabled={isLoading} onPress={onClick} style={[styles.button, { backgroundColor: isLoading ? '#e3a27f' : 'orange' }]}>
+        <TouchableOpacity disabled={isLoading} onPress={onClick} style={[styles.button, { backgroundColor: isLoading ? '#e3a27f' : 'orange' }, style]}>
             {
                 isLoading ? (
                     <LottieView

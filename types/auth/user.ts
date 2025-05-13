@@ -10,3 +10,8 @@ export interface User {
     role: string
     profile_image?: string | null
 }
+
+
+export type token = {
+    token: string
+}
