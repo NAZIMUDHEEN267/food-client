@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, TouchableOpacity, Linking } from 'react-native'
 import React, { useEffect } from 'react'
-import CommonButton from '@/components/CommonButton'
+import CommonButton from '@/components/common/CommonButton'
 import { useLocalSearchParams } from 'expo-router'
 import Animated, {
   useSharedValue,

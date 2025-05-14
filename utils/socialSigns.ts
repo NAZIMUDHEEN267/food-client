@@ -1,5 +1,7 @@
 
-import { getAuth, FacebookAuthProvider, signInWithCredential } from '@react-native-firebase/auth';
+import { tokenType } from '@/types/auth/query';
+import { User } from '@/types/auth/user';
+import auth, { FacebookAuthProvider, GoogleAuthProvider } from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { LoginManager, AccessToken } from 'react-native-fbsdk-next';
 
@@ -11,33 +13,23 @@ GoogleSignin.configure({
     webClientId: '410958891712-g49d5pljvnac5bpi9to6t1u1avpjcu0s.apps.googleusercontent.com',
 });
 
-export async function onGoogleButtonPress() {
+export async function onGoogleButtonPress(apiCall: (args: tokenType) => Promise<User>) {
     try {
         await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
         const signInResult = await GoogleSignin.signIn();
 
         let idToken = signInResult.data?.idToken;
-        if (!idToken) {
-            idToken = signInResult?.idToken;
-        }
-
 
         if (!idToken) {
             throw new Error('Sign in failed');
         }
 
-        // const googleCredential = GoogleAuthProvider.credential(idToken);
+        const googleCredential = GoogleAuthProvider.credential(idToken);
+        const userCredential = await auth().signInWithCredential(googleCredential)
 
-        // const wo = await signInWithCredential(getAuth(), googleCredential);
+        const firebaseIdToken = await userCredential.user.getIdToken();
 
-        // console.log({ wo: wo.user });
-        fetch('http://192.168.193.107:5000/api/auth/verify-token', {
-            method: 'post',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ token: idToken })
-        })
+        apiCall({ token: firebaseIdToken })
 
     } catch (error: any) {
         Toast.show({
@@ -47,39 +39,42 @@ export async function onGoogleButtonPress() {
         });
 
         console.log(error);
-        
+
     }
 }
 
 
-export async function onFacebookButtonPress() {
-  const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
+export async function onFacebookButtonPress(apiCall: (args: tokenType) => Promise<User>) {
 
-  if (result.isCancelled) {
-    throw 'User cancelled the login process';
-  }
+    try {
+        const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
 
-  // Once signed in, get the users AccessToken
-  const data = await AccessToken.getCurrentAccessToken();
+        if (result.isCancelled) {
+            throw 'User cancelled the login process';
+        }
 
-  if (!data) {
-    throw 'Something went wrong obtaining access token';
-  }
+        // Once signed in, get the users AccessToken
+        const data = await AccessToken.getCurrentAccessToken();
+
+        if (!data) {
+            throw 'Something went wrong obtaining access token';
+        }
+
+        const facebookCredential = FacebookAuthProvider.credential(data.accessToken);
+        const userCredential = await auth().signInWithCredential(facebookCredential);
+        const idToken = await userCredential.user.getIdToken();
 
 
-//   fetch('http://192.168.193.107:5000/api/auth/verify-token', {
-//     method: 'post',
-//     headers: {
-//         'Content-Type': 'application/json'
-//     },
-//     body: JSON.stringify({ token: data.accessToken })
-// }).then(res => res.json())
-// .then(res => console.log(res))
-  
-  // Create a Firebase credential with the AccessToken
-  const facebookCredential = FacebookAuthProvider.credential(data.accessToken);
+        apiCall({ token: idToken })
+    } catch (error: any) {
+        Toast.show({
+            type: 'error',
+            text1: 'Error',
+            text2: error?.message || error,
+        });
 
-  // Sign-in the user with the credential
-  signInWithCredential(getAuth(), facebookCredential).then(r => console.log({ r }));
+        console.log(error);
+
+    }
 }
 

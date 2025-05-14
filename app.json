@@ -17,8 +17,9 @@
       "bundleIdentifier": "com.nazimudheen.foodDelivery"
     },
     "android": {
+      "versionCode": 1,
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/icons/adaptive-icon.png",
+        "foregroundImage": "./assets/images/icons/profile.png",
         "backgroundColor": "#ed7c26"
       },
       "googleServicesFile": "./google-services.json",
@@ -30,11 +31,10 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
-      "expo-router",
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/icons/adaptive-icon.png",
+          "image": "./assets/images/icons/profile.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#FFA920"
@@ -49,15 +49,23 @@
         }
       ],
       [
-        "@react-native-google-signin/google-signin",
+        "expo-quick-actions",
         {
-          "iosUrlScheme": "com.googleusercontent.apps._some_id_here_"
+          "androidIcons": {
+            "profile": {
+              "foregroundImage": "./assets/images/icons/adaptive-icon.png",
+              "backgroundColor": "#ffffff"
+            }
+          }
         }
       ],
+      "@react-native-google-signin/google-signin",
       "@react-native-firebase/app",
       "@react-native-firebase/auth",
       "expo-font",
-      "expo-web-browser"
+      "expo-web-browser",
+      "expo-quick-actions",
+      "expo-router"
     ],
     "experiments": {
       "typedRoutes": true

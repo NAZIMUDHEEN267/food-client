@@ -1,14 +1,14 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import React, { useCallback, useEffect } from 'react'
-import CommonInput from '@/components/CommonInput'
+import CommonInput from '@/components/common/CommonInput'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-import CommonButton from '@/components/CommonButton'
+import CommonButton from '@/components/common/CommonButton'
 import { Link, useRouter } from 'expo-router'
 import { Image } from 'expo-image'
 import { onFacebookButtonPress, onGoogleButtonPress } from '@/utils/socialSigns'
-import { useSignInUserMutation } from '@/redux/rtk/authQuery'
+import { useSignInUserMutation, useVerifyTokenMutation } from '@/redux/rtk/authQuery'
 import { signInType } from '@/types/auth/query';
 import Toast from 'react-native-toast-message'
 import { addType, addUser } from '@/redux/slices/authSlice'
@@ -26,8 +26,12 @@ const schema = yup.object({
 const login = () => {
 
   const [signIn, { isLoading, data }] = useSignInUserMutation()
+  const [triggerVerify, { data: verifyData }] = useVerifyTokenMutation();
+
   const dispatch = useAppDispatch();
   const { setItem } = useUser()
+  const router = useRouter();
+
 
   const { control, handleSubmit } = useForm({
     resolver: yupResolver(schema),
@@ -41,22 +45,23 @@ const login = () => {
   }, [])
 
   useEffect(() => {
-    if (data) {
+    const user = data || verifyData
+
+    if (user) {
       Toast.show({
         type: 'success',
         text2: 'Login successfull.'
       })
 
-      setItem(data)
+      setItem(user)
         .then(() => {
-          dispatch(addUser(data))
+          dispatch(addUser(user))
           router.replace('/(protected)/home')
         })
     }
-  }, [data])
+  }, [data, verifyData])
 
 
-  const router = useRouter();
 
   return (
     <React.Fragment>
@@ -95,7 +100,7 @@ const login = () => {
 
 
         <View style={{ gap: 10, marginTop: 20 }}>
-          <TouchableOpacity onPress={onGoogleButtonPress} style={{ flexDirection: 'row', borderWidth: 1, justifyContent: 'center', gap: 20, paddingVertical: 7, borderRadius: 10, alignItems: 'center' }}>
+          <TouchableOpacity onPress={() => onGoogleButtonPress(triggerVerify)} style={{ flexDirection: 'row', borderWidth: 1, justifyContent: 'center', gap: 20, paddingVertical: 7, borderRadius: 10, alignItems: 'center' }}>
             <Image
               source={require('@/assets/images/icons/google.png')}
               style={{ height: 34, width: 34 }}
@@ -104,7 +109,7 @@ const login = () => {
             <Text>Login with Google</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => onFacebookButtonPress().then(() => console.log('Signed in with Facebook!'))} style={{ flexDirection: 'row', backgroundColor: '#325f8f', borderWidth: 1, justifyContent: 'center', gap: 10, paddingVertical: 10, borderRadius: 10, alignItems: 'center' }}>
+          <TouchableOpacity onPress={() => onFacebookButtonPress(triggerVerify)} style={{ flexDirection: 'row', backgroundColor: '#325f8f', borderWidth: 1, justifyContent: 'center', gap: 10, paddingVertical: 10, borderRadius: 10, alignItems: 'center' }}>
             <Image
               source={require('@/assets/images/icons/facebook.png')}
               style={{ height: 24, width: 24, objectFit: 'contain' }}

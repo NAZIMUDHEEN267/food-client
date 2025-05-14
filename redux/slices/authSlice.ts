@@ -1,5 +1,6 @@
 import { token, User } from "@/types/auth/user";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { resetState } from "../actions/reset";
 
 
 interface StateType {
@@ -23,10 +24,15 @@ const authSlice = createSlice({
             state.token = action.payload.token
             state.type = 'user'
         },
-        addType(state, action) {
-            state.type = action.payload;
+        addType(state, action: PayloadAction<{ type: 'user' | 'guest' }>) {
+            state.type = action.payload.type;
         }
-    }
+    },
+    extraReducers(builder) {
+        builder.addCase(resetState, (state, action) => {
+            state = initialState;
+        })
+    },
 })
 
 export const { addUser, addType } = authSlice.actions;

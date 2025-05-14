@@ -2,11 +2,10 @@ import { useFonts } from 'expo-font';
 import { Stack, useRouter } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
+import Animated, { useAnimatedStyle, useSharedValue, withDelay, withSpring } from 'react-native-reanimated';
 import { Provider } from 'react-redux'
 import store from '@/redux/store';
 import Toast from 'react-native-toast-message';
-
 
 
 
@@ -25,6 +24,7 @@ export default function RootLayout() {
   if (!loaded) {
     return null;
   }
+
 
   return (
     <Provider store={store}>

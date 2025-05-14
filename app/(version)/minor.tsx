@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { Image } from 'expo-image'
-import CommonButton from '@/components/CommonButton'
+import CommonButton from '@/components/common/CommonButton'
 import { Ionicons } from '@expo/vector-icons'
 import { router } from 'expo-router'
 import * as Webbrowser from 'expo-web-browser'

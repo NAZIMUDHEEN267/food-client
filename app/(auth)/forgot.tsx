@@ -1,10 +1,10 @@
 import { View, Text, StyleSheet, TextInput, Button, ImageBackground, ScrollView } from 'react-native'
 import React from 'react'
-import CommonInput from '@/components/CommonInput'
+import CommonInput from '@/components/common/CommonInput'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-import CommonButton from '@/components/CommonButton'
+import CommonButton from '@/components/common/CommonButton'
 import { Link, useRouter } from 'expo-router'
 import Toast from 'react-native-toast-message';
 import { useForgotPasswdMutation } from '@/redux/rtk/authQuery'

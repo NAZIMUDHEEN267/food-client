@@ -3,11 +3,12 @@ import { useEffect } from 'react';
 import { useVersionCheckMutation } from '@/redux/rtk/authQuery';
 import Constants from 'expo-constants'
 import { Platform } from 'react-native';
-import UiBlocker from '@/components/UiBlocker';
 import { addUser } from '@/redux/slices/authSlice';
 import * as SplashScreen from 'expo-splash-screen';
 import useUser from '@/hooks/useUser';
 import { useAppDispatch, useAppState } from '@/types/redux';
+import * as QuickActions from "expo-quick-actions";
+import { RouterAction, useQuickActionRouting } from "expo-quick-actions/router";
 
 
 
@@ -19,6 +20,7 @@ if (__DEV__) {
 
 const RootIndex = () => {
 
+  useQuickActionRouting()
 
 
   const { user } = useAppState((state) => state.auth);
@@ -28,8 +30,31 @@ const RootIndex = () => {
 
 
   const [triggerVersion, { data }] = useVersionCheckMutation();
-  console.log({ data });
-  
+
+  if (user) {
+    QuickActions.isSupported()
+      .then(res => {
+        QuickActions.setItems<RouterAction>([
+          {
+            "title": "Profile",
+            "subtitle": "View your profile",
+            icon: "profile",
+            id: "0",
+            params: { href: "/profile" },
+          },
+          {
+            "title": "Cart",
+            "subtitle": "View your cart",
+            icon: "profile",
+            id: "1",
+            params: { href: "/cart" },
+          },
+        ]);
+      })
+  } else {
+
+  }
+
 
   useEffect(() => {
 
@@ -38,10 +63,7 @@ const RootIndex = () => {
       const parse = await JSON.parse(getUser);
 
       await triggerVersion({ platform: Platform.OS });
-
       dispatch(addUser(parse || { user: null, token: null }));
-
-      SplashScreen.hideAsync()
     }
 
     initialFunction()
@@ -49,22 +71,21 @@ const RootIndex = () => {
   }, [])
 
 
-  if (!data) {
-    return <UiBlocker />
+  if (data) {
+    SplashScreen.hideAsync()
+
+    if (parseInt(String(Constants.expoConfig?.version)) < parseInt(String(data?.version))) {
+      return <Redirect href={{
+        pathname: '/(version)/major',
+        params: { version: data?.version }
+      }} />
+    } else if (!seenUpdate && Constants.expoConfig?.version !== data?.version) {
+      return <Redirect href={'/(version)/minor'} />
+    }
+
+
+    return <Redirect href={user ? '/(protected)/home' : '/(auth)'} />
   }
-
-
-  if (parseInt(String(Constants.expoConfig?.version)) < parseInt(String(data?.version))) {
-    return <Redirect href={{
-      pathname: '/(version)/major',
-      params: { version: data?.version }
-    }} />
-  } else if (!seenUpdate && Constants.expoConfig?.version !== data?.version) {
-    return <Redirect href={'/(version)/minor'} />
-  }
-
-
-  return <Redirect href={user ? '/(protected)/home' : '/(auth)'} />
 }
 
 export default RootIndex
