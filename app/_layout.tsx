@@ -13,6 +13,7 @@ import Toast from 'react-native-toast-message';
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+
   const router = useRouter();
 
   const [loaded] = useFonts({
@@ -28,7 +29,6 @@ export default function RootLayout() {
 
   return (
     <Provider store={store}>
-      <StatusBar style='light' backgroundColor='black' translucent={false} />
       <Stack screenOptions={{ animation: 'none', headerShown: false }} />
       <Toast
         position='bottom'

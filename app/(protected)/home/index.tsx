@@ -1,13 +1,18 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import { View, Text, StatusBar } from 'react-native'
+import React, { useCallback } from 'react'
 import { useAppState } from '@/types/redux'
+import { useFocusEffect } from 'expo-router'
 
 const Home = () => {
   const { type } = useAppState(state => state.auth)
-  console.log({ type });
+
+  useFocusEffect(useCallback(() => {
+    StatusBar.setBarStyle('dark-content');
+    StatusBar.setBackgroundColor('white')
+  }, []))
 
   return (
-    <View>
+    <View style={{ flex: 1, backgroundColor: '#fff' }}>
       <Text>Home</Text>
     </View>
   )

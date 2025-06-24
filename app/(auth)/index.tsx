@@ -1,11 +1,11 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, StatusBar } from 'react-native'
 import React, { useCallback, useEffect } from 'react'
 import CommonInput from '@/components/common/CommonInput'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import CommonButton from '@/components/common/CommonButton'
-import { Link, useRouter } from 'expo-router'
+import { Link, useFocusEffect, useRouter } from 'expo-router'
 import { Image } from 'expo-image'
 import { onFacebookButtonPress, onGoogleButtonPress } from '@/utils/socialSigns'
 import { useSignInUserMutation, useVerifyTokenMutation } from '@/redux/rtk/authQuery'
@@ -39,6 +39,11 @@ const login = () => {
       role: 'user'
     }
   });
+
+  useFocusEffect(useCallback(() => {
+    StatusBar.setBarStyle('light-content');
+    StatusBar.setBackgroundColor('#f05e2e')
+  }, []))
 
   const setUpGuest = useCallback(() => {
     dispatch(addType('guest'))

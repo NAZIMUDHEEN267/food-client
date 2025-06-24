@@ -7,7 +7,7 @@ import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 
 
 export const rawBasequery = fetchBaseQuery({
-    baseUrl: 'http://192.168.193.107:5000/api',
+    baseUrl: process.env.EXPO_PUBLIC_BASE_URL,
     prepareHeaders: (headers, { getState, extra }) => {
         const token = (getState() as RootState).auth.token;
 

@@ -2,7 +2,7 @@ import { Redirect, useLocalSearchParams } from 'expo-router';
 import { useEffect } from 'react';
 import { useVersionCheckMutation } from '@/redux/rtk/authQuery';
 import Constants from 'expo-constants'
-import { Platform } from 'react-native';
+import { Platform, StatusBar } from 'react-native';
 import { addUser } from '@/redux/slices/authSlice';
 import * as SplashScreen from 'expo-splash-screen';
 import useUser from '@/hooks/useUser';
@@ -83,8 +83,8 @@ const RootIndex = () => {
       return <Redirect href={'/(version)/minor'} />
     }
 
+    return <Redirect href={user ? '/(protected)/home/' : '/(auth)'} />
 
-    return <Redirect href={user ? '/(protected)/home' : '/(auth)'} />
   }
 }
 

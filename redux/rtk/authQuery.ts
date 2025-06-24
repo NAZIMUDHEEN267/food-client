@@ -10,7 +10,10 @@ export const authQuery = createApi({
             query: (data) => ({
                 url: '/auth/sign-in',
                 method: 'post',
-                body: data
+                body: {
+                    ...data,
+                    email: data?.email?.toLowerCase(),
+                }
             })
         }),
         signUpUser: build.mutation<responseType, FormData>({
